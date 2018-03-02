@@ -25,6 +25,7 @@ import 'angular-embed/dist/angular-embed';
 import 'angular-contenteditable';
 import 'angular-messages';
 import 'lr-infinite-scroll';
+import 'superdesk-ui-framework';
 
 import _ from 'lodash';
 import moment from 'moment-timezone';
@@ -75,7 +76,7 @@ import 'superdesk-core/scripts/apps/desks';
 import 'superdesk-core/scripts/apps/authoring';
 import 'superdesk-core/scripts/apps/search';
 import 'superdesk-core/scripts/apps/legal-archive';
-// import 'superdesk-core/scripts/apps/stream';
+import 'superdesk-core/scripts/apps/stream';
 import 'superdesk-core/scripts/apps/packaging';
 import 'superdesk-core/scripts/apps/highlights';
 import 'superdesk-core/scripts/apps/translations';
@@ -109,12 +110,12 @@ if (typeof window.superdeskConfig !== 'undefined') {
 // Commented angular modules are not required to run liveblog
 // But they are shown here to give a perspective of
 // what is required to run liveblog
-let sdCore = angular.module('superdesk.core', [
+const sdCore = angular.module('superdesk.core', [
     'ngRoute',
     'ngResource',
     'ngFileUpload',
 
-    'ui.bootstrap',
+    'superdesk-ui',
 
     'superdesk.core.activity',
     'superdesk.core.analytics',
@@ -160,7 +161,7 @@ angular.module('superdesk.apps', [
     'superdesk.apps.dictionaries',
     'superdesk.apps.vocabularies',
     // 'superdesk.apps.searchProviders',
-    // 'superdesk.apps.stream',
+    'superdesk.apps.stream',
     'superdesk.apps.publish', // Can't remove
     'superdesk.apps.templates',
     'superdesk.apps.monitoring',
@@ -169,7 +170,7 @@ angular.module('superdesk.apps', [
 
 angular.module('superdesk.config').constant('config', config);
 
-let liveblogModules = [
+const liveblogModules = [
     'liveblog.analytics',
     'liveblog.bloglist',
     'liveblog.edit',
@@ -189,7 +190,7 @@ if (config.marketplace) {
     liveblogModules.push('liveblog.marketplace');
 }
 
-let liveblog = angular.module('liveblog', liveblogModules);
+const liveblog = angular.module('liveblog', liveblogModules);
 
 sdCore.constant('lodash', _);
 sdCore.constant('moment', moment);
@@ -205,7 +206,7 @@ liveblog.config(['$routeProvider', '$locationProvider', ($routeProvider, $locati
 
 liveblog.run(['$rootScope', '$timeout', 'notify', 'gettext', 'session',
     function($rootScope, $timeout, notify, gettext, session) {
-        var alertTimeout;
+        let alertTimeout;
 
         $rootScope.$on('disconnected', (event) => {
             $timeout.cancel(alertTimeout);
@@ -228,7 +229,7 @@ liveblog.run(['$rootScope', '$timeout', 'notify', 'gettext', 'session',
         });
     }]);
 
-let body = angular.element('body');
+const body = angular.element('body');
 
 body.ready(() => {
     /**
